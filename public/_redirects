@@ -1,5 +1,3 @@
-/og-rockstar.html /og-tripack-rockstars.html 301
-
 # No redirigir assets estáticos al SPA
 /img/* /img/:splat 200
 /share/* /share/:splat 200

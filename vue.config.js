@@ -11,7 +11,7 @@ module.exports = defineConfig({
   pages: {
     index: {
       entry: 'src/main.js',
-      title: 'Catálogo Fin de Semana · Vinóloga',
+      title: 'Catálogo Madre · Vinóloga',
     },
   },
   devServer: {

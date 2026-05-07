@@ -83,6 +83,16 @@ function ogSlugFromPackId(packId) {
   return OG_SLUG_BY_PACK_ID[id] || ''
 }
 
+/** Fuerza recarga de preview en WhatsApp (caché agresiva). */
+const WHATSAPP_PREVIEW_CACHE_BUSTER = 'v=2'
+
+function withCacheBuster(url) {
+  const u = String(url || '').trim()
+  if (!u) return ''
+  if (u.includes(WHATSAPP_PREVIEW_CACHE_BUSTER)) return u
+  return u.includes('?') ? `${u}&${WHATSAPP_PREVIEW_CACHE_BUSTER}` : `${u}?${WHATSAPP_PREVIEW_CACHE_BUSTER}`
+}
+
 /**
  * URL para vista previa en WhatsApp: HTML con og:image (no el .jpg directo).
  */
@@ -92,9 +102,9 @@ function resolvePackPreviewUrlForWhatsApp(packId, imagePath) {
   const slug = ogSlugFromPackId(packId)
   if (slug) {
     const page = packOgPagePath(slug)
-    return `${base}/${page}`
+    return withCacheBuster(`${base}/${page}`)
   }
-  return resolvePackImageUrlForWhatsApp(imagePath)
+  return withCacheBuster(resolvePackImageUrlForWhatsApp(imagePath))
 }
 
 /**

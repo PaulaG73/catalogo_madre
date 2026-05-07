@@ -181,7 +181,7 @@ export function getWhatsAppPackUrl(pack) {
     typeof pack?.precioEspecial === 'string' ? pack.precioEspecial.trim() : ''
   const previewUrl = resolvePackPreviewUrlForWhatsApp(pack?.packId, pack?.image || '')
 
-  const parts = ['¿Vamos con este vino?']
+  const parts = ['Quiero este vino']
   if (title) parts.push(title)
   if (valle) parts.push(valle)
   parts.push('')

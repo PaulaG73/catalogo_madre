@@ -1,0 +1,146 @@
+<template>
+    <div class="navBar">
+      <nav id="navbar-principal" class="navbar navbar-expand-lg navbar-dark bg-vin-negro border-bottom py-2 py-md-4 nav-vino">
+        <div class="container-fluid">
+          <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+            <span class="navbar-brand-text">Dale un gusto a mamá</span>
+          </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2 gap-lg-4 align-items-lg-center">
+  
+              
+              <li class="nav-item">
+                <a class="nav-link" href="#contacto">Contacto</a>
+              </li>
+  
+            </ul>
+  
+          </div>
+        </div>
+      </nav>
+    </div>
+  </template>
+  
+  <script setup>
+  
+  
+  </script>
+  
+  <!-- Add "scoped" attribute to limit CSS to this component only -->
+  <style scoped>
+  .nav-vino {
+    border-color: var(--vin-borde-sutil) !important;
+    box-shadow: 0 1px 0 0 rgba(var(--vin-pastel-polvo-rgb), 0.45);
+  }
+  
+  .nav-vino .navbar-brand,
+  .nav-vino .nav-link {
+    font-family: 'Nunito', system-ui, sans-serif;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  
+  .nav-vino .navbar-brand:hover .navbar-brand-text,
+  .nav-vino .navbar-brand:focus-visible .navbar-brand-text {
+    color: #ffe8f2;
+  }
+
+  .nav-vino .navbar-brand:focus-visible {
+    outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.55);
+    outline-offset: 4px;
+    border-radius: 0.35rem;
+  }
+  
+  /* Hover / foco solo en enlaces del menú (Vinos y espumantes, Contacto) */
+  .nav-vino .navbar-nav .nav-link {
+    position: relative;
+    padding-inline: 0.75rem;
+    padding-block: 0.4rem;
+    border-radius: 0.4rem;
+    transition:
+      color 0.2s ease,
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+  
+  .nav-vino .navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0.15rem;
+    width: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(
+      90deg,
+      rgba(var(--vin-pastel-polvo-rgb), 0.95),
+      rgba(var(--vin-pastel-nube-rgb), 0.98)
+    );
+    transform: translateX(-50%);
+    transition: width 0.28s ease;
+  }
+  
+  .nav-vino .navbar-nav .nav-link:hover,
+  .nav-vino .navbar-nav .nav-link:focus-visible {
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .nav-vino .navbar-nav .nav-link:hover::after,
+  .nav-vino .navbar-nav .nav-link:focus-visible::after {
+    width: calc(100% - 1.1rem);
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    .nav-vino .navbar-nav .nav-link {
+      transition: color 0.15s ease, background-color 0.15s ease;
+    }
+  
+    .nav-vino .navbar-nav .nav-link:hover,
+    .nav-vino .navbar-nav .nav-link:focus-visible {
+      transform: none;
+    }
+  
+    .nav-vino .navbar-nav .nav-link::after {
+      transition: width 0.15s ease;
+    }
+  }
+  
+  .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+  
+  .nav-vino .navbar-brand {
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.045em;
+  }
+
+  /* Misma lectura que #sobre-mi .sobre-mi-vino-mayus */
+  .nav-vino .navbar-brand-text {
+    color: #ffd6e8;
+    font-weight: 800;
+    text-shadow:
+      0 1px 3px rgba(14, 10, 12, 0.98),
+      0 2px 4px rgba(8, 5, 9, 0.92),
+      0 0 22px rgba(var(--vin-rosa-sorbete-rgb), 0.42),
+      0 0 3px rgba(58, 15, 24, 0.85);
+  }
+  
+  @media (min-width: 992px) {
+    .nav-vino .navbar-brand {
+      font-size: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .nav-vino .navbar-brand {
+      font-size: 1.68rem;
+    }
+  }
+  </style>
+  

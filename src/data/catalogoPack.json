@@ -1,0 +1,103 @@
+[
+    {
+      "id": "1",
+      "vino": "Angelina White Angel",
+      "cepa": "100% Sauvignon Blanc",
+      "viña": "Alchemysta Wines",
+      "valle": "Valle de Casablanca",
+      "image": "/img/angelina_SB.jpeg",
+      "price": "$8.990",
+      "precioEspecial": "$7.500"
+    },
+    {
+      "id": "2",
+      "vino": "Livianita de Sangre, cocktail Brut Zero",
+      "cepa": "80% Chardonnay/20% Cinsault",
+      "viña": "Mujer Andina Wines",
+      "valle": "Valle de Colchagua / Valle del Itata",
+      "image": "/img/livianita.jpeg",
+      "price": "$13.990",
+      "precioEspecial": "$12.500"
+    },
+    {
+      "id": "3",
+      "vino": "Ai! Brut",
+      "cepa": "60% Chardonnay/40% Pinot Noir",
+      "viña": "Mujer Andina Wines",
+      "valle": "Valle del Bío Bío",
+      "image": "/img/ai_brut.jpeg",
+      "price": "$14.990",
+      "precioEspecial": "$13.000"
+    },
+    {
+      "id": "4",
+      "vino": "Sol Violeta Brut Nature - Método Tradicional",
+      "cepa": "100% Moscatel",
+      "viña": "Viña María Isabel",
+      "valle": "Valle del Itata",
+      "image": "/img/sol_violeta.jpeg",
+      "price": "$15.000",
+      "precioEspecial": "$14.000"
+    },
+    {
+      "id": "5",
+      "vino": "Grand Levita Nature - Método Tradicional",
+      "cepa": "100% Syrah orgánico",
+      "viña": "Mujer Andina Wines",
+      "valle": "Valle del Maipo",
+      "image": "/img/grand_levita.jpeg",
+      "price": "$35.990",
+      "precioEspecial": "$30.000"
+    },
+    {
+      "id": "6",
+      "vino": "Umbral Rosé",
+      "cepa": "50% Garnacha/30% Syrah/20% Monastrell",
+      "viña": "Viñateros de Raíz",
+      "valle": "Valle del Maipo",
+      "image": "/img/umbral.jpeg",
+      "price": "$13.500",
+      "precioEspecial": "$12.000"
+    },
+    {
+      "id": "7",
+      "vino": "Jardinero Turiga Nacional",
+      "cepa": "100% Touriga Nacional",
+      "viña": "Viñateros de Raíz",
+      "valle": "Valle del Maipo",
+      "image": "/img/jardinero_TN.jpeg",
+      "price": "$14.990",
+      "precioEspecial": "$12.500"
+    },
+    {
+      "id": "8",
+      "vino": "Jardinero Mezcla Tinta",
+      "cepa": "65% Cabernet Sauvignon/30% Malbec/5% Touriga Nacional",
+      "viña": "Viñateros de Raíz",
+      "valle": "Valle del Maipo",
+      "image": "/img/jardinero_MT.jpeg",
+      "price": "$14.990",
+      "precioEspecial": "$12.500"
+    },
+    {
+      "id": "9",
+      "vino": "El Infaltable Carménère",
+      "cepa": "100% Carménère",
+      "viña": "Mujer Andina Wines",
+      "valle": "Valle del Maipo",
+      "image": "/img/infaltable_carmenere.jpeg",
+      "price": "$18.990",
+      "precioEspecial": "$15.000"
+    },
+    {
+      "id": "10",
+      "vino": "Ambar Fortificado",
+      "cepa": "75% Garnacha/25% Monastrell",
+      "viña": "Viñateros de Raíz ft. La Viña del Señor",
+      "valle": "Valle del Maipo",
+      "image": "/img/ambar.jpeg",
+      "price": "$17.990",
+      "precioEspecial": "$16.000"
+    }
+  
+    ]

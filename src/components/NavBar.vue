@@ -1,24 +1,33 @@
 <template>
     <div class="navBar">
-      <nav id="navbar-principal" class="navbar navbar-expand-lg navbar-dark bg-vin-negro border-bottom py-2 py-md-4 nav-vino">
-        <div class="container-fluid">
-          <a class="navbar-brand d-flex align-items-center gap-2" href="#">
-            <span class="navbar-brand-text">Dale un gusto a mamá</span>
+      <nav id="navbar-principal" class="navbar navbar-dark bg-vin-negro border-bottom py-2 py-md-4 nav-vino">
+        <div class="container-fluid nav-vino-layout">
+          <div class="nav-logo-shell nav-logo-shell--round">
+            <img
+              class="nav-logo"
+              src="/img/Logo Flores Eternamente Bellas (Imán circular) (1).png"
+              alt="Logo Flores Eternamente Bellas"
+              width="72"
+              height="72"
+              loading="lazy"
+              decoding="async"
+            >
+          </div>
+          <a class="navbar-brand d-flex align-items-center justify-content-center gap-2" href="#">
+            <span class="navbar-brand-text">
+              Celebremos a Mamá <span class="nav-title-break"><br></span>entre Copas y Flores
+            </span>
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-2 gap-lg-4 align-items-lg-center">
-  
-              
-              <li class="nav-item">
-                <a class="nav-link" href="#contacto">Contacto</a>
-              </li>
-  
-            </ul>
-  
+          <div class="nav-logo-shell nav-logo-shell--right">
+            <img
+              class="nav-logo"
+              src="/img/logo-vinologa.png"
+              alt="Logo Vinóloga"
+              width="72"
+              height="72"
+              loading="lazy"
+              decoding="async"
+            >
           </div>
         </div>
       </nav>
@@ -36,7 +45,39 @@
     border-color: var(--vin-borde-sutil) !important;
     box-shadow: 0 1px 0 0 rgba(var(--vin-pastel-polvo-rgb), 0.45);
   }
-  
+
+  .nav-vino > .nav-vino-layout {
+    --logo-size: clamp(56px, 8vw, 72px);
+    display: grid;
+    grid-template-columns: var(--logo-size) minmax(0, 1fr) var(--logo-size);
+    align-items: center;
+    width: 100%;
+    gap: clamp(0.35rem, 1.5vw, 0.9rem);
+    justify-content: initial;
+    flex-wrap: nowrap;
+  }
+
+  .nav-logo-shell {
+    inline-size: var(--logo-size);
+    block-size: var(--logo-size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-logo-shell--round {
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .nav-logo {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+  }
+
   .nav-vino .navbar-brand,
   .nav-vino .nav-link {
     font-family: 'Nunito', system-ui, sans-serif;
@@ -110,25 +151,35 @@
     }
   }
   
-  .navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-  
   .nav-vino .navbar-brand {
-    font-size: 1.3rem;
+    font-size: clamp(0.9rem, 2vw, 1.45rem);
     text-transform: uppercase;
-    letter-spacing: 0.045em;
+    letter-spacing: clamp(0.015em, 0.18vw, 0.045em);
+    line-height: 1.2;
+    margin: 0;
+    width: 100%;
+    padding-inline: clamp(0.15rem, 0.8vw, 0.65rem);
+    text-align: center;
+    justify-content: center;
   }
 
   /* Misma lectura que #sobre-mi .sobre-mi-vino-mayus */
   .nav-vino .navbar-brand-text {
     color: #ffd6e8;
     font-weight: 800;
+    display: block;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
     text-shadow:
       0 1px 3px rgba(14, 10, 12, 0.98),
       0 2px 4px rgba(8, 5, 9, 0.92),
       0 0 22px rgba(var(--vin-rosa-sorbete-rgb), 0.42),
       0 0 3px rgba(58, 15, 24, 0.85);
+  }
+
+  .nav-title-break {
+    display: none;
   }
   
   @media (min-width: 992px) {
@@ -140,6 +191,38 @@
   @media (min-width: 1200px) {
     .nav-vino .navbar-brand {
       font-size: 1.68rem;
+    }
+  }
+
+  @media (max-width: 991.98px) {
+    .nav-vino > .nav-vino-layout {
+      --logo-size: clamp(40px, 12vw, 56px);
+      gap: 0.35rem;
+    }
+
+    .nav-vino .navbar-brand {
+      justify-content: center !important;
+      text-align: center;
+      font-size: clamp(0.82rem, 3.3vw, 1.05rem);
+      letter-spacing: 0.02em;
+      line-height: 1.16;
+      padding-inline: 0.15rem;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .nav-vino > .nav-vino-layout {
+      --logo-size: clamp(36px, 11vw, 44px);
+      gap: 0.2rem;
+    }
+
+    .nav-vino .navbar-brand {
+      font-size: clamp(0.72rem, 3.05vw, 0.9rem);
+      letter-spacing: 0.01em;
+    }
+
+    .nav-title-break {
+      display: inline;
     }
   }
   </style>

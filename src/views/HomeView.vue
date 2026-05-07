@@ -2,34 +2,17 @@
   <NavBar />
 
   <section id="sobre-mi" class="home-section home-section--ink py-3 py-md-4">
-    <h3 class="mb-2 mb-md-3 fw-bold">El mundo de Vinóloga</h3>
-    <div class="container sobre-mi d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
-      <div
-        ref="sobreMiFotoShellRef"
-        class="sobre-mi-foto-shell"
-        :class="{ 'sobre-mi-foto-shell--in-view': sobreMiFotoInView }"
-      >
-        <div class="sobre-mi-foto-marco" aria-hidden="true" />
-        <div class="sobre-mi-foto">
-          <img
-            class="sobre-mi-foto__img"
-            :src="sobreMiFotoSrc"
-            alt="Logo Vinóloga"
-            width="400"
-            height="400"
-            loading="lazy"
-            decoding="async"
-          >
-        </div>
-      </div>
+    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
       <div class="sobre-mi-texto">
-        <p class="mb-1 mb-md-2">
-          Es tiempo de <span class="sobre-mi-vino-mayus">APRENDER</span>, es tiempo de
-          <span class="sobre-mi-vino-mayus">COMPARTIR</span>, es tiempo de
-          <span class="sobre-mi-vino-mayus">DISFRUTAR</span>.
-        </p>
         <p class="mb-0">
-          Bienvenido al Mundo de Vinóloga...el mundo de los "<span class="sobre-mi-vino-mayus">VINOS CON CUENTO</span>"...
+          Madre,<br>
+          en tus manos todo florece.<br>
+          Hoy alzo una copa por tu ternura invencible,<br>
+          por tu abrazo que calma cuando la vida tiembla.<br>
+          Que nunca falten flores en tu mesa<br>
+          ni brindis en tu nombre,<br>
+          porque donde estás tú, mamá,<br>
+          todo se vuelve luz.
         </p>
       </div>
     </div>
@@ -43,7 +26,7 @@
   </section>
   <section id="packs" class="home-section home-section--slate home-section--madre pt-4 pt-md-5 pb-2 pb-md-3">
     <div class="container text-center packs-header">
-      <p class="packs-kicker mb-2">Especial</p>
+      <p class="packs-kicker mb-2">Especial de Vinóloga</p>
       <h3 class="mb-4 fw-bold">Día de la Madre</h3>
     </div>
     <div
@@ -136,19 +119,12 @@ import FooterComponent from '../components/FooterComponent.vue'
 import CardComponent from '../components/CardComponent.vue'
 import catalogoPacks from '../data/catalogoPack.json'
 
-/** Logo en `public/img/logo-vinologa.png` */
-const sobreMiFotoSrc = '/img/logo-vinologa.png'
-
 /** Dos series iguales para bucle de scroll sin salto visible */
 const proyectosLoop = computed(() => [...catalogoPacks, ...catalogoPacks])
 
 const carouselRef = ref(null)
-const sobreMiFotoShellRef = ref(null)
-const sobreMiFotoInView = ref(false)
 const carouselPaused = ref(false)
 const reduceMotion = ref(false)
-
-let sobreMiFotoObserver = null
 
 /** Píxeles por frame (~60 fps); ~0.3 ≈ 18 px/s */
 const SCROLL_STEP = 0.32
@@ -259,37 +235,8 @@ function tick() {
   rafId = requestAnimationFrame(tick)
 }
 
-function setupSobreMiFotoReveal() {
-  if (reduceMotion.value) {
-    sobreMiFotoInView.value = true
-    return
-  }
-  const shell = sobreMiFotoShellRef.value
-  if (!shell) {
-    sobreMiFotoInView.value = true
-    return
-  }
-  if (typeof IntersectionObserver === 'undefined') {
-    sobreMiFotoInView.value = true
-    return
-  }
-  sobreMiFotoObserver = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          sobreMiFotoInView.value = true
-          sobreMiFotoObserver?.unobserve(entry.target)
-        }
-      }
-    },
-    { threshold: 0.22, rootMargin: '0px 0px -8% 0px' },
-  )
-  sobreMiFotoObserver.observe(shell)
-}
-
 onMounted(() => {
   reduceMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  setupSobreMiFotoReveal()
   syncCarouselInlineSize()
   const el = carouselRef.value
   if (el && typeof ResizeObserver !== 'undefined') {
@@ -300,8 +247,6 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  sobreMiFotoObserver?.disconnect()
-  sobreMiFotoObserver = null
   if (syncCarouselRaf != null) {
     cancelAnimationFrame(syncCarouselRaf)
     syncCarouselRaf = null
@@ -577,95 +522,6 @@ onUnmounted(() => {
   }
 }
 
-#sobre-mi .sobre-mi-foto-shell {
-  --foto-tam: 184px;
-  flex: 0 0 auto;
-  width: var(--foto-tam);
-  height: var(--foto-tam);
-  margin-inline: auto;
-  position: relative;
-  opacity: 0;
-  transform: scale(0.96) translateY(14px);
-  transition:
-    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-#sobre-mi .sobre-mi-foto-shell--in-view {
-  opacity: 1;
-  transform: scale(1) translateY(0);
-}
-
-.sobre-mi-foto-marco {
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  z-index: 0;
-  background: conic-gradient(
-    from 0deg,
-    #c9a227,
-    #3ddc84,
-    #4dabf7,
-    #9775fa,
-    #f783ac,
-    rgba(var(--vin-acento-rgb), 0.95),
-    #c9a227
-  );
-  animation: sobreMiMarcoGiro 12s linear infinite;
-}
-
-@keyframes sobreMiMarcoGiro {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-#sobre-mi .sobre-mi-foto {
-  position: absolute;
-  inset: 3px;
-  z-index: 1;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: var(--vin-negro-marca);
-  box-shadow:
-    0 0 0 2px rgba(255, 255, 255, 0.1),
-    0 12px 36px rgba(0, 0, 0, 0.45);
-}
-
-@media (min-width: 768px) {
-  #sobre-mi .sobre-mi-foto-shell {
-    --foto-tam: 216px;
-    margin-inline: 0;
-  }
-}
-
-.sobre-mi-foto__img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  #sobre-mi .sobre-mi-foto-shell {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .sobre-mi-foto-marco {
-    animation: none;
-    background: linear-gradient(
-      145deg,
-      rgba(var(--vin-acento-rgb), 0.55),
-      rgba(255, 255, 255, 0.12)
-    );
-  }
-}
-
 /* Título de bloque: separación respecto al degradado / halo del fondo */
 #sobre-mi > h3 {
   filter: drop-shadow(0 3px 18px rgba(8, 5, 9, 0.72));
@@ -674,11 +530,13 @@ onUnmounted(() => {
 #sobre-mi .sobre-mi-texto {
   flex: 0 1 auto;
   min-width: 0;
-  max-width: min(100%, 40rem);
+  max-width: min(100%, 62rem);
   text-align: justify;
-  line-height: 1.65;
-  font-size: clamp(0.88rem, 2.2vw, 0.98rem);
+  line-height: 1.78;
+  font-size: clamp(0.96rem, 2vw, 1.16rem);
   font-weight: 500;
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-style: italic;
   color: #fdfdfd;
   text-shadow:
     0 1px 2px rgba(12, 8, 11, 0.92),

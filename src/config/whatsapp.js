@@ -2,6 +2,16 @@
 export const WHATSAPP_NUMBER_DIGITS = '56996450950'
 
 /**
+ * WhatsApp catálogo / flores (sección sobre mí). Distinto al número principal de packs y pie de página.
+ * Solo dígitos: código de país + número.
+ */
+export const WHATSAPP_CATALOGO_DIGITS = '56964856456'
+
+/** Texto inicial del chat al abrir el enlace de catálogo (api.whatsapp.com). */
+const WHATSAPP_CATALOGO_PREFILL_TEXT =
+  'Hola! Vi tu link en el catálogo de Vinóloga y necesito información sobre las Flores eternamente bellas'
+
+/**
  * URL pública del sitio (.env.development / .env.production).
  * Referencia literal a `process.env.VUE_APP_PUBLIC_SITE_URL` para que @vue/cli-service la sustituya.
  */
@@ -164,6 +174,23 @@ export function getWhatsAppFooterUrl() {
   if (!digits) return '#'
   const text = 'Hola Vinóloga, quiero hacer un pedido de vinos...'
   return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(text)}`
+}
+
+function catalogoDigitsOnly() {
+  return String(WHATSAPP_CATALOGO_DIGITS || '').replace(/\D/g, '')
+}
+
+export function isWhatsAppCatalogoConfigured() {
+  return catalogoDigitsOnly().length > 0
+}
+
+/**
+ * WhatsApp desde «Solicita tu catálogo aquí»: número {@link WHATSAPP_CATALOGO_DIGITS} y texto prefijado.
+ */
+export function getWhatsAppCatalogoUrl() {
+  const digits = catalogoDigitsOnly()
+  if (!digits) return '#'
+  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(WHATSAPP_CATALOGO_PREFILL_TEXT)}`
 }
 
 /**

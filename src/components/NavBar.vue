@@ -13,10 +13,11 @@
               decoding="async"
             >
           </div>
-          <a class="navbar-brand d-flex align-items-center justify-content-center gap-2" href="#">
-            <span class="navbar-brand-text">
+          <a class="navbar-brand d-flex flex-column align-items-center justify-content-center" href="#">
+            <span class="navbar-brand-text navbar-brand-text--main">
               Celebremos a Mamá <span class="nav-title-break"><br></span>entre Copas y Flores
             </span>
+            <span class="navbar-brand-subtitle">Vinóloga ft Flores eternamente bellas</span>
           </a>
           <div class="nav-logo-shell nav-logo-shell--right">
             <img
@@ -178,6 +179,21 @@
       0 0 3px rgba(58, 15, 24, 0.85);
   }
 
+  .nav-vino .navbar-brand-subtitle {
+    display: block;
+    margin-top: 0.28rem;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: clamp(0.62rem, 1.22vw, 0.9rem);
+    line-height: 1.18;
+    letter-spacing: 0.012em;
+    text-transform: none;
+    white-space: nowrap;
+    color: rgba(255, 236, 245, 0.98);
+    text-shadow: 0 1px 3px rgba(8, 5, 9, 0.85);
+  }
+
   .nav-title-break {
     display: none;
   }
@@ -208,6 +224,10 @@
       line-height: 1.16;
       padding-inline: 0.15rem;
     }
+
+    .nav-vino .navbar-brand-subtitle {
+      font-size: clamp(0.54rem, 2.05vw, 0.74rem);
+    }
   }
 
   @media (max-width: 575.98px) {
@@ -219,6 +239,10 @@
     .nav-vino .navbar-brand {
       font-size: clamp(0.72rem, 3.05vw, 0.9rem);
       letter-spacing: 0.01em;
+    }
+
+    .nav-vino .navbar-brand-subtitle {
+      font-size: clamp(0.5rem, 2.15vw, 0.62rem);
     }
 
     .nav-title-break {

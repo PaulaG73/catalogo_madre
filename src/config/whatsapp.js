@@ -201,6 +201,34 @@ export function getWhatsAppCatalogoUrl() {
 }
 
 /**
+ * WhatsApp para flores individuales (modal de "Sobre mí"):
+ * mensaje "Quiero esta flor" + nombre + precio + imagen pública.
+ * @param {{ nombre?: string, precio?: string, src?: string }} flower
+ */
+export function getWhatsAppFlowerUrl(flower) {
+  const digits = catalogoDigitsOnly()
+  if (!digits) return '#'
+
+  const nombre = typeof flower?.nombre === 'string' ? flower.nombre.trim() : ''
+  const precio = typeof flower?.precio === 'string' ? flower.precio.trim() : ''
+  const imageUrl = resolvePackImageUrlForWhatsApp(flower?.src || '')
+  const precioTxt = priceForWhatsAppMessage(precio)
+
+  const parts = ['Quiero esta flor']
+  if (nombre) parts.push(nombre)
+  if (precioTxt) parts.push(`Precio (CLP): ${precioTxt}`)
+  parts.push('')
+
+  if (imageUrl && /^https:\/\//i.test(imageUrl)) {
+    parts.unshift(withCacheBuster(imageUrl))
+    parts.push('')
+  }
+
+  const text = parts.join('\n').trimEnd()
+  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(text)}`
+}
+
+/**
  * Enlace api.whatsapp.com: «¿Vamos con este vino?» + datos + vista previa (imagen o página OG) + precio.
  * @param {{ title?: string, valle?: string, price?: string, precioEspecial?: string, image?: string, packId?: string }} pack
  */

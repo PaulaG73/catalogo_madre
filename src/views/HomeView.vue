@@ -137,6 +137,17 @@
         >
         <h4 class="sobre-mi-flor-modal-title mb-1">{{ florModal.nombre }}</h4>
         <p class="sobre-mi-flor-modal-price mb-0">{{ florModal.precio }}</p>
+        <a
+          class="sobre-mi-flor-modal-buy btn btn-whatsapp text-decoration-none mt-3"
+          :href="florModalWhatsAppUrl"
+          target="_blank"
+          rel="noopener noreferrer"
+          :class="{ 'opacity-50': !whatsappCatalogoReady }"
+          :aria-disabled="!whatsappCatalogoReady"
+          :aria-label="`Comprar ${florModal.nombre} por WhatsApp`"
+        >
+          Comprar por WhatsApp
+        </a>
       </article>
     </div>
     <div class="sobre-mi-cierre">
@@ -262,7 +273,11 @@ import NavBar from '../components/NavBar'
 import FooterComponent from '../components/FooterComponent.vue'
 import CardComponent from '../components/CardComponent.vue'
 import catalogoPacks from '../data/catalogoPack.json'
-import { getWhatsAppCatalogoUrl, isWhatsAppCatalogoConfigured } from '@/config/whatsapp'
+import {
+  getWhatsAppCatalogoUrl,
+  getWhatsAppFlowerUrl,
+  isWhatsAppCatalogoConfigured,
+} from '@/config/whatsapp'
 
 /** Dos series iguales para bucle de scroll sin salto visible */
 const proyectosLoop = computed(() => [...catalogoPacks, ...catalogoPacks])
@@ -286,6 +301,10 @@ const sobreMiFloresDer = [
 /** Por debajo del breakpoint lg: las 6 flores en rejilla 2×3 (columna izquierda y luego derecha del escritorio) */
 const sobreMiFloresGridMovil = computed(() => [...sobreMiFloresIzq, ...sobreMiFloresDer])
 const florModal = ref(null)
+const florModalWhatsAppUrl = computed(() => {
+  if (!florModal.value) return '#'
+  return getWhatsAppFlowerUrl(florModal.value)
+})
 
 function openFlorModal(flor) {
   florModal.value = flor
@@ -960,6 +979,28 @@ onUnmounted(() => {
   color: #ffd6e8;
   font-size: clamp(0.98rem, 3vw, 1.12rem);
   font-weight: 700;
+}
+
+#sobre-mi .sobre-mi-flor-modal-buy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  padding: 0.58rem 1.05rem;
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+#sobre-mi .sobre-mi-flor-modal-buy:hover {
+  filter: brightness(1.06);
+  color: #fff;
+}
+
+#sobre-mi .sobre-mi-flor-modal-buy:focus-visible {
+  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.65);
+  outline-offset: 2px;
 }
 
 @media (hover: hover) and (pointer: fine) {

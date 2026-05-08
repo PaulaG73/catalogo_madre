@@ -14,13 +14,27 @@
         </svg>
       </a>
     </div>
-    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--orbit-stage d-flex flex-column align-items-center justify-content-center">
-      <div
-        class="sobre-mi-orbit"
-        :style="{ '--n': sobreMiFlorCircle.length }"
-      >
-        <div class="sobre-mi-orbit-core">
-          <div class="sobre-mi-texto">
+    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--poema-flores py-3 py-md-4">
+      <div class="row sobre-mi-poema-row align-items-center justify-content-center gx-2 gx-md-3 gx-xl-4 gy-4">
+        <aside class="col-12 col-md-6 col-lg-3 order-2 order-lg-1 sobre-mi-flores-col sobre-mi-flores-col--izq">
+          <div class="sobre-mi-flores-stack">
+            <figure
+              v-for="flor in sobreMiFloresIzq"
+              :key="flor.src"
+              class="sobre-mi-flor-figure mb-0"
+            >
+              <img
+                class="sobre-mi-flor-img"
+                :src="flor.src"
+                :alt="flor.alt"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+          </div>
+        </aside>
+        <div class="col-12 col-lg-6 order-1 order-lg-2 sobre-mi-poema-col">
+          <div class="sobre-mi-texto sobre-mi-texto--poema-centro mx-auto">
             <p class="mb-0">
               Madre,<br>
               en tus manos todo florece.<br>
@@ -33,28 +47,23 @@
             </p>
           </div>
         </div>
-        <figure
-          v-for="(flor, i) in sobreMiFlorCircle"
-          :key="flor.src"
-          class="sobre-mi-orbit-node mb-0"
-          :class="{ 'sobre-mi-orbit-node--active': orbitFlorActive === i }"
-          :style="{ '--i': i }"
-          role="button"
-          tabindex="0"
-          :aria-pressed="orbitFlorActive === i ? 'true' : 'false'"
-          :aria-label="`${flor.alt}. Pulsa para mantener la foto ampliada.`"
-          @click="toggleOrbitFlor(i)"
-          @keydown.enter.prevent="toggleOrbitFlor(i)"
-          @keydown.space.prevent="toggleOrbitFlor(i)"
-        >
-          <img
-            class="sobre-mi-orbit-img"
-            :src="flor.src"
-            :alt="flor.alt"
-            loading="lazy"
-            decoding="async"
-          >
-        </figure>
+        <aside class="col-12 col-md-6 col-lg-3 order-3 sobre-mi-flores-col sobre-mi-flores-col--der">
+          <div class="sobre-mi-flores-stack">
+            <figure
+              v-for="flor in sobreMiFloresDer"
+              :key="flor.src"
+              class="sobre-mi-flor-figure mb-0"
+            >
+              <img
+                class="sobre-mi-flor-img"
+                :src="flor.src"
+                :alt="flor.alt"
+                loading="lazy"
+                decoding="async"
+              >
+            </figure>
+          </div>
+        </aside>
       </div>
     </div>
     <div class="sobre-mi-cierre">
@@ -189,28 +198,18 @@ const proyectosLoop = computed(() => [...catalogoPacks, ...catalogoPacks])
 const whatsappCatalogoUrl = computed(() => getWhatsAppCatalogoUrl())
 const whatsappCatalogoReady = computed(() => isWhatsAppCatalogoConfigured())
 
-/**
- * Variante «órbita»: mismas miniaturas redondas alrededor del poema (orden desde arriba, sentido horario).
- * Nota: en disco está `calas.JPG` (no «cals») y `orquídea.JPG`.
- */
-const sobreMiFlorCircle = [
-  { src: '/img/calas.JPG', alt: 'Calas' },
+/** Flores laterales en «Sobre mí»: izquierda y derecha del poema */
+const sobreMiFloresIzq = [
   { src: '/img/dalia.jpg', alt: 'Dalia' },
   { src: '/img/gerbera.JPG', alt: 'Gerbera' },
   { src: '/img/girasoles.JPG', alt: 'Girasoles' },
-  { src: '/img/lirio_de_agua.JPG', alt: 'Lirio de agua' },
-  { src: '/img/margaritas.JPG', alt: 'Margaritas' },
-  { src: '/img/orquídea.JPG', alt: 'Orquídea' },
-  { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
-  { src: '/img/ramo_mixto.JPG', alt: 'Ramo mixto' },
 ]
 
-/** Índice de flor con zoom fijo por clic (null = ninguna). Hover amplía siempre por CSS. */
-const orbitFlorActive = ref(null)
-
-function toggleOrbitFlor(i) {
-  orbitFlorActive.value = orbitFlorActive.value === i ? null : i
-}
+const sobreMiFloresDer = [
+  { src: '/img/margaritas.JPG', alt: 'Margaritas' },
+  { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
+  { src: '/img/tulipanes.JPG', alt: 'Tulipanes' },
+]
 
 const carouselRef = ref(null)
 const carouselPaused = ref(false)
@@ -633,175 +632,82 @@ onUnmounted(() => {
     0 2px 18px rgba(8, 5, 8, 0.65);
 }
 
-/* Órbita circular: miniaturas iguales y redondas alrededor del poema */
-#sobre-mi .sobre-mi--orbit-stage {
-  padding-block: clamp(0.75rem, 3vw, 1.5rem);
+/* Poema central + columnas de fotos (izq / der) */
+#sobre-mi .sobre-mi--poema-flores {
+  padding-block: clamp(0.75rem, 3vw, 1.75rem);
 }
 
-#sobre-mi .sobre-mi-orbit {
-  position: relative;
-  width: min(100%, 560px);
-  aspect-ratio: 1;
-  margin-inline: auto;
-  flex-shrink: 0;
-  overflow: visible;
-  /* Referencia para unidades cqi/cqb (radio basado en el ancho real del órbita) */
-  container-type: inline-size;
-  container-name: orbit-sobre-mi;
-  --sobre-orbit-thumb: clamp(52px, 12.5vw, 82px);
-  /*
-   * Radio máximo seguro: centro de la miniatura a mitad del lado del cuadrado,
-   * menos radio de la foto y un margen (evita solapamiento con el poema en móvil).
-   */
-  --sobre-orbit-r: min(37vw, 214px);
-  --sobre-orbit-zoom: 1.52;
+#sobre-mi .sobre-mi-texto--poema-centro {
+  text-align: center;
+  max-width: min(100%, 34rem);
 }
 
-@supports (width: 1cqi) {
-  #sobre-mi .sobre-mi-orbit {
-    --sobre-orbit-r: calc(
-      50cqi - var(--sobre-orbit-thumb) / 2 - clamp(8px, 2.5cqi, 14px)
-    );
+@media (max-width: 991.98px) {
+  #sobre-mi .sobre-mi-texto--poema-centro {
+    font-size: clamp(0.92rem, 3vw, 1.08rem);
+    line-height: 1.68;
   }
 }
 
-@media (min-width: 576px) {
-  #sobre-mi .sobre-mi-orbit {
-    --sobre-orbit-thumb: clamp(58px, 11.5vw, 88px);
+#sobre-mi .sobre-mi-flores-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.4rem, 1.35vw, 0.75rem);
+}
+
+#sobre-mi .sobre-mi-flor-figure {
+  width: 100%;
+  max-width: min(100%, clamp(84px, 18vw, 128px));
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #sobre-mi .sobre-mi-flor-figure {
+    max-width: min(100%, clamp(88px, 14vw, 118px));
   }
 }
 
 @media (min-width: 992px) {
-  #sobre-mi .sobre-mi-orbit {
-    width: min(100%, 600px);
-    --sobre-orbit-thumb: 88px;
+  #sobre-mi .sobre-mi-flores-col .sobre-mi-flor-figure {
+    max-width: min(100%, clamp(96px, 11vw, 132px));
   }
 }
 
-/* Móvil / portrait estrecho: poema más compacto, flores más pequeñas, menos zoom, texto siempre encima */
-@media (max-width: 767.98px) {
-  #sobre-mi .sobre-mi-orbit {
-    --sobre-orbit-thumb: clamp(34px, 8.5vw, 44px);
-    --sobre-orbit-zoom: 1.35;
-  }
-
-  #sobre-mi .sobre-mi-orbit-core {
-    z-index: 8;
-  }
-
-  #sobre-mi .sobre-mi-orbit-core .sobre-mi-texto {
-    max-width: min(52%, 11rem);
-    font-size: clamp(0.78rem, 3.35vw, 0.92rem);
-    line-height: 1.52;
-    padding-inline: 0.2rem;
-  }
-}
-
-@media (max-width: 399.98px) {
-  #sobre-mi .sobre-mi-orbit {
-    --sobre-orbit-thumb: clamp(30px, 7.8vw, 40px);
-    --sobre-orbit-zoom: 1.28;
-  }
-
-  #sobre-mi .sobre-mi-orbit-core .sobre-mi-texto {
-    max-width: min(48%, 10rem);
-    font-size: clamp(0.74rem, 3.2vw, 0.86rem);
-    line-height: 1.48;
-  }
-}
-
-#sobre-mi .sobre-mi-orbit-core {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 2;
-  pointer-events: none;
-}
-
-#sobre-mi .sobre-mi-orbit-core .sobre-mi-texto {
-  pointer-events: auto;
-  max-width: min(74%, 17rem);
-  text-align: center;
-  position: relative;
-  z-index: 3;
-}
-
-#sobre-mi .sobre-mi-orbit-node {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 1;
-  width: var(--sobre-orbit-thumb);
-  height: var(--sobre-orbit-thumb);
-  margin: 0;
-  transform-origin: center center;
-  /* Centrar en el eje del poema y situar en la circunferencia (no usar margin negativo + margin: 0 a la vez) */
-  transform: translate(-50%, -50%) rotate(calc(var(--i) * 360deg / var(--n)))
-    translateY(calc(-1 * var(--sobre-orbit-r))) rotate(calc(-360deg * var(--i) / var(--n)));
-  padding: 0;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  outline-offset: 4px;
-  border-radius: 50%;
-}
-
-#sobre-mi .sobre-mi-orbit-node:focus-visible {
-  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.75);
-}
-
-#sobre-mi .sobre-mi-orbit-node:hover,
-#sobre-mi .sobre-mi-orbit-node:focus-visible,
-#sobre-mi .sobre-mi-orbit-node--active {
-  z-index: 4;
-}
-
-@media (min-width: 768px) {
-  #sobre-mi .sobre-mi-orbit-node:hover,
-  #sobre-mi .sobre-mi-orbit-node:focus-visible,
-  #sobre-mi .sobre-mi-orbit-node--active {
-    z-index: 12;
-  }
-}
-
-#sobre-mi .sobre-mi-orbit-img {
+#sobre-mi .sobre-mi-flor-img {
   display: block;
   width: 100%;
-  height: 100%;
-  position: relative;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 214, 232, 0.42);
+  border-radius: 0.62rem;
+  border: 2px solid rgba(255, 214, 232, 0.38);
   box-shadow:
-    0 6px 18px rgba(8, 5, 9, 0.42),
-    0 0 0 1px rgba(255, 236, 245, 0.18);
+    0 6px 18px rgba(8, 5, 9, 0.38),
+    0 0 0 1px rgba(255, 236, 245, 0.14);
   transition:
-    transform 0.24s ease,
-    box-shadow 0.24s ease,
-    border-color 0.24s ease;
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
 }
 
-#sobre-mi .sobre-mi-orbit-node:hover .sobre-mi-orbit-img,
-#sobre-mi .sobre-mi-orbit-node:focus-visible .sobre-mi-orbit-img,
-#sobre-mi .sobre-mi-orbit-node--active .sobre-mi-orbit-img {
-  transform: scale(var(--sobre-orbit-zoom));
-  border-color: rgba(255, 236, 245, 0.65);
-  box-shadow:
-    0 12px 28px rgba(8, 5, 9, 0.48),
-    0 0 0 2px rgba(var(--vin-rosa-sorbete-rgb), 0.35);
+@media (hover: hover) and (pointer: fine) {
+  #sobre-mi .sobre-mi-flor-img:hover {
+    transform: scale(1.035);
+    border-color: rgba(255, 236, 245, 0.58);
+    box-shadow:
+      0 12px 26px rgba(8, 5, 9, 0.44),
+      0 0 0 2px rgba(var(--vin-rosa-sorbete-rgb), 0.28);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #sobre-mi .sobre-mi-orbit-img {
+  #sobre-mi .sobre-mi-flor-img {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
 
-  #sobre-mi .sobre-mi-orbit-node:hover .sobre-mi-orbit-img,
-  #sobre-mi .sobre-mi-orbit-node:focus-visible .sobre-mi-orbit-img,
-  #sobre-mi .sobre-mi-orbit-node--active .sobre-mi-orbit-img {
-    transition: none;
+  @media (hover: hover) and (pointer: fine) {
+    #sobre-mi .sobre-mi-flor-img:hover {
+      transform: none;
+    }
   }
 }
 

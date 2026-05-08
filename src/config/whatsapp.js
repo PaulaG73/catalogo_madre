@@ -185,7 +185,7 @@ export function isWhatsAppCatalogoConfigured() {
 }
 
 /**
- * WhatsApp desde «Solicita tu catálogo aquí»: número {@link WHATSAPP_CATALOGO_DIGITS},
+ * WhatsApp desde «Solicita tu catálogo de flores, aquí»: número {@link WHATSAPP_CATALOGO_DIGITS},
  * texto prefijado y enlace a página OG estática (vista previa con imagen del poema / flores).
  */
 export function getWhatsAppCatalogoUrl() {

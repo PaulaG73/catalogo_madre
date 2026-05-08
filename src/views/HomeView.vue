@@ -1,7 +1,19 @@
 <template>
   <NavBar />
 
-  <section id="sobre-mi" class="home-section home-section--ink py-3 py-md-4">
+  <section id="sobre-mi" class="home-section home-section--ink pt-2 pb-3 py-md-4">
+    <div class="container-fluid px-3 px-md-4 px-lg-5 text-start sobre-mi-scroll-to-vinos mb-2 mb-md-3">
+      <a
+        href="#packs"
+        class="btn-top btn-top--rosa-circle"
+        title="Ir a los vinos"
+        aria-label="Ir a la sección de vinos y packs"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+        </svg>
+      </a>
+    </div>
     <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--orbit-stage d-flex flex-column align-items-center justify-content-center">
       <div
         class="sobre-mi-orbit"
@@ -54,8 +66,9 @@
         rel="noopener noreferrer"
         :class="{ 'opacity-50': !whatsappCatalogoReady }"
         :aria-disabled="!whatsappCatalogoReady"
-        aria-label="Solicita tu catálogo aquí por WhatsApp"
+        aria-label="Solicita tu catálogo de flores, aquí por WhatsApp"
       >
+        <span class="sobre-mi-whatsapp-label">Solicita tu catálogo de flores, aquí</span>
         <span
           class="btn btn-whatsapp rounded-circle p-2 shadow-sm d-inline-flex align-items-center justify-content-center sobre-mi-wa-icon flex-shrink-0"
           aria-hidden="true"
@@ -64,7 +77,6 @@
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
           </svg>
         </span>
-        <span class="sobre-mi-whatsapp-label">Solicita tu catálogo aquí</span>
       </a>
     </div>
     <div class="container text-end mt-2">
@@ -633,20 +645,29 @@ onUnmounted(() => {
   margin-inline: auto;
   flex-shrink: 0;
   overflow: visible;
+  /* Referencia para unidades cqi/cqb (radio basado en el ancho real del órbita) */
+  container-type: inline-size;
+  container-name: orbit-sobre-mi;
   --sobre-orbit-thumb: clamp(52px, 12.5vw, 82px);
   /*
-   * Radio solo con longitudes absolutas (vw/px). Evitar % dentro de la variable:
-   * al heredar en cada .sobre-mi-orbit-node el porcentaje se resolvía contra la miniatura (~52px),
-   * no contra el órbita, y el anillo colapsaba al centro.
+   * Radio máximo seguro: centro de la miniatura a mitad del lado del cuadrado,
+   * menos radio de la foto y un margen (evita solapamiento con el poema en móvil).
    */
   --sobre-orbit-r: min(37vw, 214px);
   --sobre-orbit-zoom: 1.52;
 }
 
+@supports (width: 1cqi) {
+  #sobre-mi .sobre-mi-orbit {
+    --sobre-orbit-r: calc(
+      50cqi - var(--sobre-orbit-thumb) / 2 - clamp(8px, 2.5cqi, 14px)
+    );
+  }
+}
+
 @media (min-width: 576px) {
   #sobre-mi .sobre-mi-orbit {
     --sobre-orbit-thumb: clamp(58px, 11.5vw, 88px);
-    --sobre-orbit-r: min(34vw, 236px);
   }
 }
 
@@ -654,7 +675,38 @@ onUnmounted(() => {
   #sobre-mi .sobre-mi-orbit {
     width: min(100%, 600px);
     --sobre-orbit-thumb: 88px;
-    --sobre-orbit-r: min(32vw, 248px);
+  }
+}
+
+/* Móvil / portrait estrecho: poema más compacto, flores más pequeñas, menos zoom, texto siempre encima */
+@media (max-width: 767.98px) {
+  #sobre-mi .sobre-mi-orbit {
+    --sobre-orbit-thumb: clamp(34px, 8.5vw, 44px);
+    --sobre-orbit-zoom: 1.35;
+  }
+
+  #sobre-mi .sobre-mi-orbit-core {
+    z-index: 8;
+  }
+
+  #sobre-mi .sobre-mi-orbit-core .sobre-mi-texto {
+    max-width: min(52%, 11rem);
+    font-size: clamp(0.78rem, 3.35vw, 0.92rem);
+    line-height: 1.52;
+    padding-inline: 0.2rem;
+  }
+}
+
+@media (max-width: 399.98px) {
+  #sobre-mi .sobre-mi-orbit {
+    --sobre-orbit-thumb: clamp(30px, 7.8vw, 40px);
+    --sobre-orbit-zoom: 1.28;
+  }
+
+  #sobre-mi .sobre-mi-orbit-core .sobre-mi-texto {
+    max-width: min(48%, 10rem);
+    font-size: clamp(0.74rem, 3.2vw, 0.86rem);
+    line-height: 1.48;
   }
 }
 
@@ -672,6 +724,8 @@ onUnmounted(() => {
   pointer-events: auto;
   max-width: min(74%, 17rem);
   text-align: center;
+  position: relative;
+  z-index: 3;
 }
 
 #sobre-mi .sobre-mi-orbit-node {
@@ -701,7 +755,15 @@ onUnmounted(() => {
 #sobre-mi .sobre-mi-orbit-node:hover,
 #sobre-mi .sobre-mi-orbit-node:focus-visible,
 #sobre-mi .sobre-mi-orbit-node--active {
-  z-index: 12;
+  z-index: 4;
+}
+
+@media (min-width: 768px) {
+  #sobre-mi .sobre-mi-orbit-node:hover,
+  #sobre-mi .sobre-mi-orbit-node:focus-visible,
+  #sobre-mi .sobre-mi-orbit-node--active {
+    z-index: 12;
+  }
 }
 
 #sobre-mi .sobre-mi-orbit-img {

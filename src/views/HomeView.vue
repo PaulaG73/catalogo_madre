@@ -2,18 +2,18 @@
   <NavBar />
 
   <section id="sobre-mi" class="home-section home-section--ink pt-2 pb-3 py-md-4">
-    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi-scroll-to-vinos mb-2 mb-md-3">
+    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi-scroll-to-vinos text-start mb-2 mb-md-3">
       <a
         href="#packs"
         class="sobre-mi-scroll-to-vinos-link d-inline-flex align-items-center text-decoration-none"
         title="Ir al catálogo de vinos"
       >
-        <span class="sobre-mi-scroll-to-vinos-text">Ir al catálogo de vinos</span>
         <span class="btn-top btn-top--rosa-circle flex-shrink-0" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
             <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
           </svg>
         </span>
+        <span class="sobre-mi-scroll-to-vinos-text">Ir al catálogo de vinos</span>
       </a>
     </div>
     <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--poema-flores py-3 py-md-4">
@@ -25,13 +25,20 @@
               :key="flor.src"
               class="sobre-mi-flor-figure mb-0"
             >
-              <img
-                class="sobre-mi-flor-img"
-                :src="flor.src"
-                :alt="flor.alt"
-                loading="lazy"
-                decoding="async"
+              <button
+                type="button"
+                class="sobre-mi-flor-trigger"
+                :aria-label="`Ver detalle de ${flor.nombre}`"
+                @click="openFlorModal(flor)"
               >
+                <img
+                  class="sobre-mi-flor-img"
+                  :src="flor.src"
+                  :alt="flor.nombre"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </button>
             </figure>
           </div>
         </aside>
@@ -59,13 +66,20 @@
             :key="'grid-' + flor.src"
             class="sobre-mi-flor-figure mb-0"
           >
-            <img
-              class="sobre-mi-flor-img"
-              :src="flor.src"
-              :alt="flor.alt"
-              loading="lazy"
-              decoding="async"
+            <button
+              type="button"
+              class="sobre-mi-flor-trigger"
+              :aria-label="`Ver detalle de ${flor.nombre}`"
+              @click="openFlorModal(flor)"
             >
+              <img
+                class="sobre-mi-flor-img"
+                :src="flor.src"
+                :alt="flor.nombre"
+                loading="lazy"
+                decoding="async"
+              >
+            </button>
           </figure>
         </div>
         <aside class="col-lg-3 d-none d-lg-flex sobre-mi-flores-col sobre-mi-flores-col--der flex-column align-items-center">
@@ -75,20 +89,57 @@
               :key="flor.src"
               class="sobre-mi-flor-figure mb-0"
             >
-              <img
-                class="sobre-mi-flor-img"
-                :src="flor.src"
-                :alt="flor.alt"
-                loading="lazy"
-                decoding="async"
+              <button
+                type="button"
+                class="sobre-mi-flor-trigger"
+                :aria-label="`Ver detalle de ${flor.nombre}`"
+                @click="openFlorModal(flor)"
               >
+                <img
+                  class="sobre-mi-flor-img"
+                  :src="flor.src"
+                  :alt="flor.nombre"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </button>
             </figure>
           </div>
         </aside>
       </div>
     </div>
+    <div
+      v-if="florModal"
+      class="sobre-mi-flor-modal-backdrop"
+      role="presentation"
+      @click.self="closeFlorModal"
+    >
+      <article
+        class="sobre-mi-flor-modal"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="`Detalle de ${florModal.nombre}`"
+      >
+        <button
+          type="button"
+          class="sobre-mi-flor-modal-close"
+          aria-label="Cerrar popup de la flor"
+          @click="closeFlorModal"
+        >
+          ×
+        </button>
+        <img
+          class="sobre-mi-flor-modal-img"
+          :src="florModal.src"
+          :alt="florModal.nombre"
+          loading="lazy"
+          decoding="async"
+        >
+        <h4 class="sobre-mi-flor-modal-title mb-1">{{ florModal.nombre }}</h4>
+        <p class="sobre-mi-flor-modal-price mb-0">{{ florModal.precio }}</p>
+      </article>
+    </div>
     <div class="sobre-mi-cierre">
-      Agrega una hermosa flor o ramo de "Flores eternamente bellas" a tu botella de vino o espumante y dale un sello especial a tu regalo.
       <a
         class="sobre-mi-whatsapp text-decoration-none"
         :href="whatsappCatalogoUrl"
@@ -96,9 +147,9 @@
         rel="noopener noreferrer"
         :class="{ 'opacity-50': !whatsappCatalogoReady }"
         :aria-disabled="!whatsappCatalogoReady"
-        aria-label="Solicita tu catálogo de flores, aquí por WhatsApp"
+        aria-label="Solicita información sobre más opciones de flores y ramos aquí por WhatsApp"
       >
-        <span class="sobre-mi-whatsapp-label">Solicita tu catálogo de flores, aquí</span>
+        <span class="sobre-mi-whatsapp-label">Solicita información sobre más opciones de flores y ramos aquí</span>
         <span
           class="btn btn-whatsapp rounded-circle p-2 shadow-sm d-inline-flex align-items-center justify-content-center sobre-mi-wa-icon flex-shrink-0"
           aria-hidden="true"
@@ -107,13 +158,6 @@
             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
           </svg>
         </span>
-      </a>
-    </div>
-    <div class="container text-end mt-2">
-      <a href="#" class="btn-top btn-top--rosa-circle" title="Volver al inicio" aria-label="Volver al inicio">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
-        </svg>
       </a>
     </div>
   </section>
@@ -178,11 +222,18 @@
         </svg>
       </button>
     </div>
-    <div class="container text-end mt-2">
-      <a href="#" class="btn-top btn-top--rosa-circle" title="Volver al inicio" aria-label="Volver al inicio">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-          <path d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
-        </svg>
+    <div class="container packs-scroll-to-flores text-end mt-2">
+      <a
+        href="#sobre-mi"
+        class="packs-scroll-to-flores-link d-inline-flex align-items-center text-decoration-none"
+        title="Volver a las flores"
+      >
+        <span class="packs-scroll-to-flores-text">Volver a las flores</span>
+        <span class="btn-top btn-top--rosa-circle flex-shrink-0" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M8 12a.5.5 0 0 0 .5-.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 0 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 .5.5z"/>
+          </svg>
+        </span>
       </a>
     </div>
   </section>
@@ -221,19 +272,28 @@ const whatsappCatalogoReady = computed(() => isWhatsAppCatalogoConfigured())
 
 /** Flores laterales en «Sobre mí»: izquierda y derecha del poema */
 const sobreMiFloresIzq = [
-  { src: '/img/dalia.jpg', alt: 'Dalia' },
-  { src: '/img/orquídea.JPG', alt: 'Orquídea' },
-  { src: '/img/gerbera.JPG', alt: 'Gerbera' },
+  { src: '/img/dalia.jpg', nombre: 'Dahlia', precio: '$8.000' },
+  { src: '/img/orquídea.JPG', nombre: 'Orquídea con maceta', precio: '$20.000' },
+  { src: '/img/gerbera.JPG', nombre: 'Gerbera', precio: '$8.000' },
 ]
 
 const sobreMiFloresDer = [
-  { src: '/img/tulipanes.JPG', alt: 'Tulipanes' },
-  { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
-  { src: '/img/ramo_mixto_3.JPG', alt: 'Ramo mixto 3' },
+  { src: '/img/tulipanes.JPG', nombre: 'Ramo de Tulipanes', precio: '$30.000' },
+  { src: '/img/ramo_lilium.JPG', nombre: 'Ramo de Lirios', precio: '$40.000' },
+  { src: '/img/ramo_mixto_3.JPG', nombre: 'Ramo mixto', precio: '$40.000' },
 ]
 
 /** Por debajo del breakpoint lg: las 6 flores en rejilla 2×3 (columna izquierda y luego derecha del escritorio) */
 const sobreMiFloresGridMovil = computed(() => [...sobreMiFloresIzq, ...sobreMiFloresDer])
+const florModal = ref(null)
+
+function openFlorModal(flor) {
+  florModal.value = flor
+}
+
+function closeFlorModal() {
+  florModal.value = null
+}
 
 const carouselRef = ref(null)
 const carouselPaused = ref(false)
@@ -644,11 +704,48 @@ onUnmounted(() => {
   gap: clamp(0.45rem, 2vw, 0.85rem);
   color: #fff8fb;
   font-weight: 600;
-  font-size: clamp(0.82rem, 2vw, 0.96rem);
+  font-size: clamp(0.96rem, 2.4vw, 1.12rem);
   letter-spacing: 0.01em;
   text-shadow:
     0 1px 2px rgba(12, 8, 11, 0.92),
     0 0 18px rgba(8, 5, 8, 0.35);
+}
+
+#sobre-mi .sobre-mi-scroll-to-vinos {
+  display: flex;
+  justify-content: flex-start;
+}
+
+#packs .packs-scroll-to-flores-link {
+  gap: clamp(0.45rem, 2vw, 0.85rem);
+  color: #fff8fb;
+  font-weight: 600;
+  font-size: clamp(0.96rem, 2.4vw, 1.12rem);
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 1px 2px rgba(12, 8, 11, 0.92),
+    0 0 18px rgba(8, 5, 8, 0.35);
+}
+
+#packs .packs-scroll-to-flores {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#packs .packs-scroll-to-flores-link:hover {
+  color: #ffeef8;
+}
+
+#packs .packs-scroll-to-flores-link:hover .packs-scroll-to-flores-text,
+#packs .packs-scroll-to-flores-link:focus-visible .packs-scroll-to-flores-text {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+#packs .packs-scroll-to-flores-link:focus-visible {
+  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.6);
+  outline-offset: 4px;
+  border-radius: 0.35rem;
 }
 
 #sobre-mi .sobre-mi-scroll-to-vinos-link:hover {
@@ -695,8 +792,27 @@ onUnmounted(() => {
 
 @media (max-width: 991.98px) {
   #sobre-mi .sobre-mi-texto--poema-centro {
-    font-size: clamp(0.92rem, 3vw, 1.08rem);
-    line-height: 1.68;
+    font-size: clamp(1.02rem, 3.5vw, 1.22rem);
+    line-height: 1.72;
+  }
+}
+
+@media (max-width: 575.98px) {
+  #sobre-mi .sobre-mi-texto--poema-centro {
+    font-size: clamp(1.08rem, 4.4vw, 1.28rem);
+    line-height: 1.76;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #sobre-mi .sobre-mi-cierre {
+    font-size: clamp(1.02rem, 3.5vw, 1.22rem);
+  }
+}
+
+@media (min-width: 992px) {
+  #sobre-mi .sobre-mi-cierre {
+    font-size: clamp(0.96rem, 2vw, 1.16rem);
   }
 }
 
@@ -710,6 +826,22 @@ onUnmounted(() => {
 #sobre-mi .sobre-mi-flor-figure {
   width: 100%;
   max-width: min(100%, clamp(84px, 18vw, 128px));
+}
+
+#sobre-mi .sobre-mi-flor-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 0.62rem;
+  background: transparent;
+  cursor: pointer;
+}
+
+#sobre-mi .sobre-mi-flor-trigger:focus-visible {
+  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.68);
+  outline-offset: 3px;
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
@@ -757,6 +889,77 @@ onUnmounted(() => {
     transform 0.22s ease,
     box-shadow 0.22s ease,
     border-color 0.22s ease;
+}
+
+#sobre-mi .sobre-mi-flor-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1080;
+  background: rgba(15, 10, 14, 0.72);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+#sobre-mi .sobre-mi-flor-modal {
+  position: relative;
+  width: min(100%, 22rem);
+  border-radius: 1rem;
+  background: linear-gradient(165deg, #3d3340 0%, #2f2833 100%);
+  border: 1px solid rgba(255, 214, 232, 0.35);
+  box-shadow: 0 20px 44px rgba(4, 2, 4, 0.5);
+  padding: 1rem 1rem 1.1rem;
+  text-align: center;
+}
+
+#sobre-mi .sobre-mi-flor-modal-close {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.45rem;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.22rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#sobre-mi .sobre-mi-flor-modal-close:hover {
+  background: rgba(255, 255, 255, 0.24);
+}
+
+#sobre-mi .sobre-mi-flor-modal-close:focus-visible {
+  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.75);
+  outline-offset: 2px;
+}
+
+#sobre-mi .sobre-mi-flor-modal-img {
+  display: block;
+  width: min(100%, 13.5rem);
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 0.72rem;
+  margin: 0.2rem auto 0.8rem;
+  border: 2px solid rgba(255, 214, 232, 0.45);
+  box-shadow: 0 10px 22px rgba(7, 4, 8, 0.42);
+}
+
+#sobre-mi .sobre-mi-flor-modal-title {
+  color: #ffe8f2;
+  font-size: clamp(1.05rem, 3.4vw, 1.28rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+#sobre-mi .sobre-mi-flor-modal-price {
+  color: #ffd6e8;
+  font-size: clamp(0.98rem, 3vw, 1.12rem);
+  font-weight: 700;
 }
 
 @media (hover: hover) and (pointer: fine) {

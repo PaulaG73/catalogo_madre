@@ -1,6 +1,6 @@
 <template>
     <div class="navBar">
-      <nav id="navbar-principal" class="navbar navbar-dark bg-vin-negro border-bottom py-2 py-md-4 nav-vino">
+      <nav id="navbar-principal" class="navbar navbar-dark bg-vin-negro border-bottom nav-vino">
         <div class="container-fluid nav-vino-layout">
           <div class="nav-logo-shell nav-logo-shell--round">
             <img
@@ -30,6 +30,9 @@
               decoding="async"
             >
           </div>
+          <p class="navbar-brand-note mb-0">
+            Agrega una hermosa flor o ramo de "Flores eternamente bellas" a tu botella de vino o espumante y dale un sello especial a tu regalo.
+          </p>
         </div>
       </nav>
     </div>
@@ -43,19 +46,35 @@
   <!-- Add "scoped" attribute to limit CSS to this component only -->
   <style scoped>
   .nav-vino {
+    padding-block: clamp(0.7rem, 1.9vw, 1.25rem);
     border-color: var(--vin-borde-sutil) !important;
     box-shadow: 0 1px 0 0 rgba(var(--vin-pastel-polvo-rgb), 0.45);
   }
 
   .nav-vino > .nav-vino-layout {
-    --logo-size: clamp(64px, 9.25vw, 84px);
+    --logo-size: clamp(78px, 10.8vw, 108px);
     display: grid;
-    grid-template-columns: var(--logo-size) minmax(0, 1fr) var(--logo-size);
+    grid-template-columns: minmax(var(--logo-size), var(--logo-size)) minmax(0, 1fr) minmax(var(--logo-size), var(--logo-size));
+    grid-template-areas:
+      "logo-left brand logo-right"
+      "logo-left note logo-right";
     align-items: center;
     width: 100%;
     gap: clamp(0.35rem, 1.5vw, 0.9rem);
     justify-content: initial;
     flex-wrap: nowrap;
+  }
+
+  .nav-logo-shell--round {
+    grid-area: logo-left;
+  }
+
+  .nav-vino .navbar-brand {
+    grid-area: brand;
+  }
+
+  .nav-logo-shell--right {
+    grid-area: logo-right;
   }
 
   .nav-logo-shell {
@@ -64,6 +83,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    align-self: center;
   }
 
   .nav-logo-shell--round {
@@ -153,15 +173,19 @@
   }
   
   .nav-vino .navbar-brand {
-    font-size: clamp(0.9rem, 2vw, 1.45rem);
+    font-size: clamp(1.05rem, 2.4vw, 1.75rem);
     text-transform: uppercase;
     letter-spacing: clamp(0.015em, 0.18vw, 0.045em);
     line-height: 1.2;
     margin: 0;
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     padding-inline: clamp(0.15rem, 0.8vw, 0.65rem);
     text-align: center;
     justify-content: center;
+    justify-self: center;
+    overflow: hidden;
   }
 
   /* Misma lectura que #sobre-mi .sobre-mi-vino-mayus */
@@ -185,13 +209,34 @@
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
     font-style: italic;
     font-weight: 600;
-    font-size: clamp(0.62rem, 1.22vw, 0.9rem);
+    font-size: clamp(0.76rem, 1.45vw, 1.02rem);
     line-height: 1.18;
     letter-spacing: 0.012em;
     text-transform: none;
-    white-space: nowrap;
+    white-space: normal;
     color: rgba(255, 236, 245, 0.98);
     text-shadow: 0 1px 3px rgba(8, 5, 9, 0.85);
+  }
+
+  .nav-vino .navbar-brand-note {
+    grid-area: note;
+    display: block;
+    margin-top: clamp(0.15rem, 0.7vw, 0.35rem);
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: clamp(0.68rem, 1.35vw, 0.84rem);
+    line-height: 1.35;
+    letter-spacing: 0.005em;
+    text-transform: none;
+    color: rgba(255, 242, 248, 0.94);
+    text-shadow: 0 1px 2px rgba(8, 5, 9, 0.78);
+    width: 100%;
+    max-width: min(100%, 68ch);
+    margin-inline: auto;
+    text-align: center;
+    padding-inline: clamp(0.35rem, 1.5vw, 1.2rem);
+    overflow-wrap: anywhere;
   }
 
   .nav-title-break {
@@ -200,49 +245,87 @@
   
   @media (min-width: 992px) {
     .nav-vino .navbar-brand {
-      font-size: 1.5rem;
+      font-size: 1.72rem;
     }
   }
   
   @media (min-width: 1200px) {
     .nav-vino .navbar-brand {
-      font-size: 1.68rem;
+      font-size: 1.95rem;
     }
   }
 
   @media (max-width: 991.98px) {
+    .nav-vino {
+      padding-block: clamp(0.6rem, 2.4vw, 0.95rem);
+    }
+
     .nav-vino > .nav-vino-layout {
-      --logo-size: clamp(46px, 13vw, 64px);
+      --logo-size: clamp(60px, 13vw, 82px);
       gap: 0.35rem;
+      grid-template-areas:
+        "logo-left brand logo-right"
+        "logo-left note logo-right";
     }
 
     .nav-vino .navbar-brand {
       justify-content: center !important;
       text-align: center;
-      font-size: clamp(0.82rem, 3.3vw, 1.05rem);
+      font-size: clamp(1rem, 3.6vw, 1.3rem);
       letter-spacing: 0.02em;
       line-height: 1.16;
       padding-inline: 0.15rem;
     }
 
     .nav-vino .navbar-brand-subtitle {
-      font-size: clamp(0.54rem, 2.05vw, 0.74rem);
+      font-size: clamp(0.72rem, 2.4vw, 0.92rem);
+    }
+
+    .nav-vino .navbar-brand-note {
+      font-size: clamp(0.64rem, 2.05vw, 0.77rem);
+      line-height: 1.3;
+      margin-top: 0.24rem;
+      max-width: min(100%, 62ch);
+      padding-inline: 0.3rem;
     }
   }
 
   @media (max-width: 575.98px) {
     .nav-vino > .nav-vino-layout {
-      --logo-size: clamp(42px, 12.5vw, 52px);
+      --logo-size: clamp(48px, 12vw, 64px);
       gap: 0.2rem;
+      grid-template-columns: var(--logo-size) minmax(0, 1fr) var(--logo-size);
+      grid-template-areas:
+        "logo-left brand logo-right"
+        "logo-left note logo-right";
     }
 
     .nav-vino .navbar-brand {
-      font-size: clamp(0.72rem, 3.05vw, 0.9rem);
+      font-size: clamp(0.95rem, 4.4vw, 1.24rem);
       letter-spacing: 0.01em;
+      line-height: 1.12;
+    }
+
+    .nav-vino .navbar-brand-text {
+      overflow-wrap: break-word;
+      word-break: normal;
     }
 
     .nav-vino .navbar-brand-subtitle {
-      font-size: clamp(0.5rem, 2.15vw, 0.62rem);
+      font-size: clamp(0.7rem, 3vw, 0.9rem);
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.2;
+      margin-top: 0.2rem;
+    }
+
+    .nav-vino .navbar-brand-note {
+      font-size: clamp(0.62rem, 2.75vw, 0.74rem);
+      line-height: 1.25;
+      letter-spacing: 0;
+      margin-top: 0.18rem;
+      max-width: min(100%, 52ch);
+      padding-inline: 0.2rem;
     }
 
     .nav-title-break {

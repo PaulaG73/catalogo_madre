@@ -16,7 +16,7 @@
     </div>
     <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--poema-flores py-3 py-md-4">
       <div class="row sobre-mi-poema-row align-items-center justify-content-center gx-2 gx-md-3 gx-xl-4 gy-4">
-        <aside class="col-12 col-md-6 col-lg-3 order-2 order-lg-1 sobre-mi-flores-col sobre-mi-flores-col--izq">
+        <aside class="col-lg-3 d-none d-lg-flex sobre-mi-flores-col sobre-mi-flores-col--izq flex-column align-items-center">
           <div class="sobre-mi-flores-stack">
             <figure
               v-for="flor in sobreMiFloresIzq"
@@ -33,7 +33,7 @@
             </figure>
           </div>
         </aside>
-        <div class="col-12 col-lg-6 order-1 order-lg-2 sobre-mi-poema-col">
+        <div class="col-12 col-lg-6 sobre-mi-poema-col">
           <div class="sobre-mi-texto sobre-mi-texto--poema-centro mx-auto">
             <p class="mb-0">
               Madre,<br>
@@ -47,7 +47,26 @@
             </p>
           </div>
         </div>
-        <aside class="col-12 col-md-6 col-lg-3 order-3 sobre-mi-flores-col sobre-mi-flores-col--der">
+        <div
+          class="col-12 d-lg-none sobre-mi-flores-grid-movil"
+          role="group"
+          aria-label="Flores del catálogo"
+        >
+          <figure
+            v-for="flor in sobreMiFloresGridMovil"
+            :key="'grid-' + flor.src"
+            class="sobre-mi-flor-figure mb-0"
+          >
+            <img
+              class="sobre-mi-flor-img"
+              :src="flor.src"
+              :alt="flor.alt"
+              loading="lazy"
+              decoding="async"
+            >
+          </figure>
+        </div>
+        <aside class="col-lg-3 d-none d-lg-flex sobre-mi-flores-col sobre-mi-flores-col--der flex-column align-items-center">
           <div class="sobre-mi-flores-stack">
             <figure
               v-for="flor in sobreMiFloresDer"
@@ -210,6 +229,9 @@ const sobreMiFloresDer = [
   { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
   { src: '/img/tulipanes.JPG', alt: 'Tulipanes' },
 ]
+
+/** Por debajo del breakpoint lg: las 6 flores en rejilla 2×3 (columna izquierda y luego derecha del escritorio) */
+const sobreMiFloresGridMovil = computed(() => [...sobreMiFloresIzq, ...sobreMiFloresDer])
 
 const carouselRef = ref(null)
 const carouselPaused = ref(false)
@@ -670,6 +692,25 @@ onUnmounted(() => {
 @media (min-width: 992px) {
   #sobre-mi .sobre-mi-flores-col .sobre-mi-flor-figure {
     max-width: min(100%, clamp(96px, 11vw, 132px));
+  }
+}
+
+/* Por debajo de lg: las 6 fotos en 2 filas × 3 columnas (tras el poema) */
+@media (max-width: 991.98px) {
+  #sobre-mi .sobre-mi-flores-grid-movil {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: clamp(0.28rem, 2.2vw, 0.5rem);
+    row-gap: clamp(0.4rem, 2.8vw, 0.65rem);
+    width: 100%;
+    max-width: min(100%, 22rem);
+    margin-inline: auto;
+    padding-inline: 0.12rem;
+  }
+
+  #sobre-mi .sobre-mi-flores-grid-movil .sobre-mi-flor-figure {
+    max-width: none;
+    width: 100%;
   }
 }
 

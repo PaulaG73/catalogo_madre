@@ -185,12 +185,18 @@ export function isWhatsAppCatalogoConfigured() {
 }
 
 /**
- * WhatsApp desde «Solicita tu catálogo aquí»: número {@link WHATSAPP_CATALOGO_DIGITS} y texto prefijado.
+ * WhatsApp desde «Solicita tu catálogo aquí»: número {@link WHATSAPP_CATALOGO_DIGITS},
+ * texto prefijado y enlace a página OG estática (vista previa con imagen del poema / flores).
  */
 export function getWhatsAppCatalogoUrl() {
   const digits = catalogoDigitsOnly()
   if (!digits) return '#'
-  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(WHATSAPP_CATALOGO_PREFILL_TEXT)}`
+  const base = getShareBaseOrigin()
+  let body = WHATSAPP_CATALOGO_PREFILL_TEXT
+  if (base && /^https:\/\//i.test(base)) {
+    body += `\n\n${withCacheBuster(`${base}/og-sobre-mi.html`)}`
+  }
+  return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(body)}`
 }
 
 /**

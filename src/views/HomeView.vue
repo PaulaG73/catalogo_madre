@@ -280,7 +280,7 @@ const sobreMiFloresIzq = [
 const sobreMiFloresDer = [
   { src: '/img/tulipanes.JPG', nombre: 'Ramo de Tulipanes', precio: '$30.000' },
   { src: '/img/ramo_lilium.JPG', nombre: 'Ramo de Lirios', precio: '$40.000' },
-  { src: '/img/ramo_mixto_3.JPG', nombre: 'Ramo mixto', precio: '$40.000' },
+  { src: '/img/ramo_mixto_3.JPG', nombre: 'Ramo mixto', precio: '$45.000' },
 ]
 
 /** Por debajo del breakpoint lg: las 6 flores en rejilla 2×3 (columna izquierda y luego derecha del escritorio) */

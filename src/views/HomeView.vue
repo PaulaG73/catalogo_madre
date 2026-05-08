@@ -220,14 +220,14 @@ const whatsappCatalogoReady = computed(() => isWhatsAppCatalogoConfigured())
 /** Flores laterales en «Sobre mí»: izquierda y derecha del poema */
 const sobreMiFloresIzq = [
   { src: '/img/dalia.jpg', alt: 'Dalia' },
+  { src: '/img/orquídea.JPG', alt: 'Orquídea' },
   { src: '/img/gerbera.JPG', alt: 'Gerbera' },
-  { src: '/img/girasoles.JPG', alt: 'Girasoles' },
 ]
 
 const sobreMiFloresDer = [
-  { src: '/img/margaritas.JPG', alt: 'Margaritas' },
-  { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
   { src: '/img/tulipanes.JPG', alt: 'Tulipanes' },
+  { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
+  { src: '/img/ramo_mixto_3.JPG', alt: 'Ramo mixto 3' },
 ]
 
 /** Por debajo del breakpoint lg: las 6 flores en rejilla 2×3 (columna izquierda y luego derecha del escritorio) */
@@ -700,10 +700,10 @@ onUnmounted(() => {
   #sobre-mi .sobre-mi-flores-grid-movil {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: clamp(0.28rem, 2.2vw, 0.5rem);
-    row-gap: clamp(0.4rem, 2.8vw, 0.65rem);
+    column-gap: clamp(0.22rem, 1.75vw, 0.42rem);
+    row-gap: clamp(0.32rem, 2.2vw, 0.52rem);
     width: 100%;
-    max-width: min(100%, 22rem);
+    max-width: min(100%, 18.25rem);
     margin-inline: auto;
     padding-inline: 0.12rem;
   }

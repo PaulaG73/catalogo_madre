@@ -94,7 +94,7 @@ function ogSlugFromPackId(packId) {
 }
 
 /** Fuerza recarga de preview en WhatsApp (caché agresiva). */
-const WHATSAPP_PREVIEW_CACHE_BUSTER = 'v=6'
+const WHATSAPP_PREVIEW_CACHE_BUSTER = 'v=7'
 
 function withCacheBuster(url) {
   const u = String(url || '').trim()

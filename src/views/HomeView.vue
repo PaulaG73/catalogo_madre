@@ -2,31 +2,51 @@
   <NavBar />
 
   <section id="sobre-mi" class="home-section home-section--ink py-3 py-md-4">
-    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi d-flex flex-column flex-md-row align-items-center justify-content-center gap-3">
-      <div class="sobre-mi-texto">
-        <p class="mb-0">
-          Madre,<br>
-          en tus manos todo florece.<br>
-          Hoy alzo una copa por tu ternura invencible,<br>
-          por tu abrazo que calma cuando la vida tiembla.<br>
-          Que nunca falten flores en tu mesa<br>
-          ni brindis en tu nombre,<br>
-          porque donde estás tú, mamá,<br>
-          todo se vuelve luz.
-        </p>
-      </div>
-      <div class="sobre-mi-media">
-        <img
-          class="sobre-mi-imagen"
-          src="/img/dalia.jpg"
-          alt="Dalia en tonos rosados"
-          loading="lazy"
-          decoding="async"
+    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--orbit-stage d-flex flex-column align-items-center justify-content-center">
+      <div
+        class="sobre-mi-orbit"
+        :style="{ '--n': sobreMiFlorCircle.length }"
+      >
+        <div class="sobre-mi-orbit-core">
+          <div class="sobre-mi-texto">
+            <p class="mb-0">
+              Madre,<br>
+              en tus manos todo florece.<br>
+              Hoy alzo una copa por tu ternura invencible,<br>
+              por tu abrazo que calma cuando la vida tiembla.<br>
+              Que nunca falten flores en tu mesa<br>
+              ni brindis en tu nombre,<br>
+              porque donde estás tú, mamá,<br>
+              todo se vuelve luz.
+            </p>
+          </div>
+        </div>
+        <figure
+          v-for="(flor, i) in sobreMiFlorCircle"
+          :key="flor.src"
+          class="sobre-mi-orbit-node mb-0"
+          :class="{ 'sobre-mi-orbit-node--active': orbitFlorActive === i }"
+          :style="{ '--i': i }"
+          role="button"
+          tabindex="0"
+          :aria-pressed="orbitFlorActive === i ? 'true' : 'false'"
+          :aria-label="`${flor.alt}. Pulsa para mantener la foto ampliada.`"
+          @click="toggleOrbitFlor(i)"
+          @keydown.enter.prevent="toggleOrbitFlor(i)"
+          @keydown.space.prevent="toggleOrbitFlor(i)"
         >
+          <img
+            class="sobre-mi-orbit-img"
+            :src="flor.src"
+            :alt="flor.alt"
+            loading="lazy"
+            decoding="async"
+          >
+        </figure>
       </div>
     </div>
     <div class="sobre-mi-cierre">
-      Agrega una hermosa flor o un ramo "Flores eternamente bellas" a tu botella de vino o espumante y dale un sello especial a tu regalo.
+      Agrega una hermosa flor o ramo de "Flores eternamente bellas" a tu botella de vino o espumante y dale un sello especial a tu regalo.
       <a
         class="sobre-mi-whatsapp text-decoration-none"
         :href="whatsappCatalogoUrl"
@@ -156,6 +176,29 @@ const proyectosLoop = computed(() => [...catalogoPacks, ...catalogoPacks])
 
 const whatsappCatalogoUrl = computed(() => getWhatsAppCatalogoUrl())
 const whatsappCatalogoReady = computed(() => isWhatsAppCatalogoConfigured())
+
+/**
+ * Variante «órbita»: mismas miniaturas redondas alrededor del poema (orden desde arriba, sentido horario).
+ * Nota: en disco está `calas.JPG` (no «cals») y `orquídea.JPG`.
+ */
+const sobreMiFlorCircle = [
+  { src: '/img/calas.JPG', alt: 'Calas' },
+  { src: '/img/dalia.jpg', alt: 'Dalia' },
+  { src: '/img/gerbera.JPG', alt: 'Gerbera' },
+  { src: '/img/girasoles.JPG', alt: 'Girasoles' },
+  { src: '/img/lirio_de_agua.JPG', alt: 'Lirio de agua' },
+  { src: '/img/margaritas.JPG', alt: 'Margaritas' },
+  { src: '/img/orquídea.JPG', alt: 'Orquídea' },
+  { src: '/img/ramo_lilium.JPG', alt: 'Ramo de lilium' },
+  { src: '/img/ramo_mixto.JPG', alt: 'Ramo mixto' },
+]
+
+/** Índice de flor con zoom fijo por clic (null = ninguna). Hover amplía siempre por CSS. */
+const orbitFlorActive = ref(null)
+
+function toggleOrbitFlor(i) {
+  orbitFlorActive.value = orbitFlorActive.value === i ? null : i
+}
 
 const carouselRef = ref(null)
 const carouselPaused = ref(false)
@@ -578,19 +621,126 @@ onUnmounted(() => {
     0 2px 18px rgba(8, 5, 8, 0.65);
 }
 
-#sobre-mi .sobre-mi-media {
-  flex: 0 0 auto;
+/* Órbita circular: miniaturas iguales y redondas alrededor del poema */
+#sobre-mi .sobre-mi--orbit-stage {
+  padding-block: clamp(0.75rem, 3vw, 1.5rem);
 }
 
-#sobre-mi .sobre-mi-imagen {
+#sobre-mi .sobre-mi-orbit {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+  flex-shrink: 0;
+  overflow: visible;
+  --sobre-orbit-thumb: clamp(52px, 12.5vw, 82px);
+  /*
+   * Radio solo con longitudes absolutas (vw/px). Evitar % dentro de la variable:
+   * al heredar en cada .sobre-mi-orbit-node el porcentaje se resolvía contra la miniatura (~52px),
+   * no contra el órbita, y el anillo colapsaba al centro.
+   */
+  --sobre-orbit-r: min(37vw, 214px);
+  --sobre-orbit-zoom: 1.52;
+}
+
+@media (min-width: 576px) {
+  #sobre-mi .sobre-mi-orbit {
+    --sobre-orbit-thumb: clamp(58px, 11.5vw, 88px);
+    --sobre-orbit-r: min(34vw, 236px);
+  }
+}
+
+@media (min-width: 992px) {
+  #sobre-mi .sobre-mi-orbit {
+    width: min(100%, 600px);
+    --sobre-orbit-thumb: 88px;
+    --sobre-orbit-r: min(32vw, 248px);
+  }
+}
+
+#sobre-mi .sobre-mi-orbit-core {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#sobre-mi .sobre-mi-orbit-core .sobre-mi-texto {
+  pointer-events: auto;
+  max-width: min(74%, 17rem);
+  text-align: center;
+}
+
+#sobre-mi .sobre-mi-orbit-node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: var(--sobre-orbit-thumb);
+  height: var(--sobre-orbit-thumb);
+  margin: 0;
+  transform-origin: center center;
+  /* Centrar en el eje del poema y situar en la circunferencia (no usar margin negativo + margin: 0 a la vez) */
+  transform: translate(-50%, -50%) rotate(calc(var(--i) * 360deg / var(--n)))
+    translateY(calc(-1 * var(--sobre-orbit-r))) rotate(calc(-360deg * var(--i) / var(--n)));
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+#sobre-mi .sobre-mi-orbit-node:focus-visible {
+  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.75);
+}
+
+#sobre-mi .sobre-mi-orbit-node:hover,
+#sobre-mi .sobre-mi-orbit-node:focus-visible,
+#sobre-mi .sobre-mi-orbit-node--active {
+  z-index: 12;
+}
+
+#sobre-mi .sobre-mi-orbit-img {
   display: block;
-  width: clamp(180px, 22vw, 300px);
-  max-width: 100%;
-  height: auto;
-  border-radius: 1rem;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 214, 232, 0.42);
   box-shadow:
-    0 10px 28px rgba(8, 5, 9, 0.45),
-    0 0 0 1px rgba(255, 214, 232, 0.24);
+    0 6px 18px rgba(8, 5, 9, 0.42),
+    0 0 0 1px rgba(255, 236, 245, 0.18);
+  transition:
+    transform 0.24s ease,
+    box-shadow 0.24s ease,
+    border-color 0.24s ease;
+}
+
+#sobre-mi .sobre-mi-orbit-node:hover .sobre-mi-orbit-img,
+#sobre-mi .sobre-mi-orbit-node:focus-visible .sobre-mi-orbit-img,
+#sobre-mi .sobre-mi-orbit-node--active .sobre-mi-orbit-img {
+  transform: scale(var(--sobre-orbit-zoom));
+  border-color: rgba(255, 236, 245, 0.65);
+  box-shadow:
+    0 12px 28px rgba(8, 5, 9, 0.48),
+    0 0 0 2px rgba(var(--vin-rosa-sorbete-rgb), 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #sobre-mi .sobre-mi-orbit-img {
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  #sobre-mi .sobre-mi-orbit-node:hover .sobre-mi-orbit-img,
+  #sobre-mi .sobre-mi-orbit-node:focus-visible .sobre-mi-orbit-img,
+  #sobre-mi .sobre-mi-orbit-node--active .sobre-mi-orbit-img {
+    transition: none;
+  }
 }
 
 #sobre-mi .sobre-mi-cierre {

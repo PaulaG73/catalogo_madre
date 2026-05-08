@@ -7,8 +7,8 @@
               class="nav-logo"
               src="/img/Logo Flores Eternamente Bellas (Imán circular) (1).png"
               alt="Logo Flores Eternamente Bellas"
-              width="72"
-              height="72"
+              width="84"
+              height="84"
               loading="lazy"
               decoding="async"
             >
@@ -24,8 +24,8 @@
               class="nav-logo"
               src="/img/logo-vinologa.png"
               alt="Logo Vinóloga"
-              width="72"
-              height="72"
+              width="84"
+              height="84"
               loading="lazy"
               decoding="async"
             >
@@ -48,7 +48,7 @@
   }
 
   .nav-vino > .nav-vino-layout {
-    --logo-size: clamp(56px, 8vw, 72px);
+    --logo-size: clamp(64px, 9.25vw, 84px);
     display: grid;
     grid-template-columns: var(--logo-size) minmax(0, 1fr) var(--logo-size);
     align-items: center;
@@ -212,7 +212,7 @@
 
   @media (max-width: 991.98px) {
     .nav-vino > .nav-vino-layout {
-      --logo-size: clamp(40px, 12vw, 56px);
+      --logo-size: clamp(46px, 13vw, 64px);
       gap: 0.35rem;
     }
 
@@ -232,7 +232,7 @@
 
   @media (max-width: 575.98px) {
     .nav-vino > .nav-vino-layout {
-      --logo-size: clamp(36px, 11vw, 44px);
+      --logo-size: clamp(42px, 12.5vw, 52px);
       gap: 0.2rem;
     }
 

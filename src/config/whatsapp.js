@@ -94,7 +94,7 @@ function ogSlugFromPackId(packId) {
 }
 
 /** Fuerza recarga de preview en WhatsApp (caché agresiva). */
-const WHATSAPP_PREVIEW_CACHE_BUSTER = 'v=5'
+const WHATSAPP_PREVIEW_CACHE_BUSTER = 'v=6'
 
 function withCacheBuster(url) {
   const u = String(url || '').trim()
@@ -194,7 +194,8 @@ export function getWhatsAppCatalogoUrl() {
   const base = getShareBaseOrigin()
   let body = WHATSAPP_CATALOGO_PREFILL_TEXT
   if (base && /^https:\/\//i.test(base)) {
-    body += `\n\n${withCacheBuster(`${base}/og-sobre-mi.html`)}`
+    const previewUrl = withCacheBuster(`${base}/og-sobre-mi.html`)
+    body = `${previewUrl}\n\n${WHATSAPP_CATALOGO_PREFILL_TEXT}`
   }
   return `https://api.whatsapp.com/send?phone=${digits}&text=${encodeURIComponent(body)}`
 }

@@ -2,16 +2,18 @@
   <NavBar />
 
   <section id="sobre-mi" class="home-section home-section--ink pt-2 pb-3 py-md-4">
-    <div class="container-fluid px-3 px-md-4 px-lg-5 text-start sobre-mi-scroll-to-vinos mb-2 mb-md-3">
+    <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi-scroll-to-vinos mb-2 mb-md-3">
       <a
         href="#packs"
-        class="btn-top btn-top--rosa-circle"
-        title="Ir a los vinos"
-        aria-label="Ir a la sección de vinos y packs"
+        class="sobre-mi-scroll-to-vinos-link d-inline-flex align-items-center text-decoration-none"
+        title="Ir al catálogo de vinos"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-          <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
-        </svg>
+        <span class="sobre-mi-scroll-to-vinos-text">Ir al catálogo de vinos</span>
+        <span class="btn-top btn-top--rosa-circle flex-shrink-0" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+            <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v5.793l2.146-2.147a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 1 1 .708-.708L7.5 10.293V4.5A.5.5 0 0 1 8 4z"/>
+          </svg>
+        </span>
       </a>
     </div>
     <div class="container-fluid px-3 px-md-4 px-lg-5 sobre-mi sobre-mi--poema-flores py-3 py-md-4">
@@ -636,6 +638,33 @@ onUnmounted(() => {
 /* Título de bloque: separación respecto al degradado / halo del fondo */
 #sobre-mi > h3 {
   filter: drop-shadow(0 3px 18px rgba(8, 5, 9, 0.72));
+}
+
+#sobre-mi .sobre-mi-scroll-to-vinos-link {
+  gap: clamp(0.45rem, 2vw, 0.85rem);
+  color: #fff8fb;
+  font-weight: 600;
+  font-size: clamp(0.82rem, 2vw, 0.96rem);
+  letter-spacing: 0.01em;
+  text-shadow:
+    0 1px 2px rgba(12, 8, 11, 0.92),
+    0 0 18px rgba(8, 5, 8, 0.35);
+}
+
+#sobre-mi .sobre-mi-scroll-to-vinos-link:hover {
+  color: #ffeef8;
+}
+
+#sobre-mi .sobre-mi-scroll-to-vinos-link:hover .sobre-mi-scroll-to-vinos-text,
+#sobre-mi .sobre-mi-scroll-to-vinos-link:focus-visible .sobre-mi-scroll-to-vinos-text {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+#sobre-mi .sobre-mi-scroll-to-vinos-link:focus-visible {
+  outline: 2px solid rgba(var(--vin-rosa-sorbete-rgb), 0.6);
+  outline-offset: 4px;
+  border-radius: 0.35rem;
 }
 
 #sobre-mi .sobre-mi-texto {

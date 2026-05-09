@@ -218,6 +218,8 @@
               :image="proyecto.image"
               :price="proyecto.price"
               :precio-especial="proyecto.precioEspecial"
+              :agotado="Boolean(proyecto.agotado)"
+              :ultima-unidad="Boolean(proyecto.ultimaUnidad)"
             />
           </div>
         </div>

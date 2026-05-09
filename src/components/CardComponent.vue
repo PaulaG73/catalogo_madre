@@ -1,12 +1,31 @@
 <template>
-    <div class="card card-pack h-100 d-flex flex-column shadow-sm border-success">
-      <div class="card-img-wrap card-img-wrap--pack flex-shrink-0">
+    <div
+      class="card card-pack h-100 d-flex flex-column shadow-sm border-success"
+      :class="{ 'card-pack--agotado': agotado }"
+    >
+      <div
+        class="card-img-wrap card-img-wrap--pack flex-shrink-0"
+        :class="{ 'card-img-wrap--agotado': agotado }"
+      >
         <img
           :src="image"
           class="card-img-top"
+          :class="{ 'card-img-top--agotado': agotado }"
           :alt="`${title}. ${winery}`"
           loading="lazy"
         >
+        <span
+          v-if="agotado"
+          class="card-agotado-badge"
+          aria-hidden="true"
+        >Agotado</span>
+        <div
+          v-if="ultimaUnidadVisible"
+          class="card-ultima-unidad-overlay"
+          role="status"
+        >
+          <span class="card-ultima-unidad-chip">Última unidad</span>
+        </div>
       </div>
       <div class="card-body card-pack-body d-flex flex-column flex-grow-1">
         <div class="card-mainline flex-shrink-0 w-100 text-start">
@@ -52,12 +71,13 @@
           <span class="card-wa-wrap">
             <a
               class="btn btn-whatsapp rounded-circle card-wa-btn shadow-sm"
-              :href="whatsappUrl"
-              target="_blank"
+              :href="whatsappEnabled ? whatsappUrl : '#'"
+              :target="whatsappEnabled ? '_blank' : undefined"
               rel="noopener noreferrer"
-              :aria-disabled="!whatsappReady"
+              :aria-disabled="!whatsappEnabled"
               :class="{
-                'opacity-50': !whatsappReady,
+                'opacity-50': !whatsappEnabled,
+                'pointer-events-none': !whatsappEnabled,
               }"
               :aria-label="whatsappLinkAriaLabel"
               @click="onWaCardClick"
@@ -118,7 +138,19 @@
       type: String,
       default: '',
     },
+    agotado: {
+      type: Boolean,
+      default: false,
+    },
+    ultimaUnidad: {
+      type: Boolean,
+      default: false,
+    },
   })
+
+  const ultimaUnidadVisible = computed(
+    () => props.ultimaUnidad && !props.agotado,
+  )
 
   const precioEspecialTrim = computed(() =>
     typeof props.precioEspecial === 'string' ? props.precioEspecial.trim() : '',
@@ -146,15 +178,20 @@
   )
   const whatsappReady = computed(() => isWhatsAppConfigured())
 
-  const waTooltipText = computed(() => 'Pide este vino aqui...')
+  const whatsappEnabled = computed(() => whatsappReady.value && !props.agotado)
+
+  const waTooltipText = computed(() =>
+    props.agotado ? 'Producto agotado' : 'Pide este vino aqui...',
+  )
 
   const whatsappLinkAriaLabel = computed(() => {
+    if (props.agotado) return `${props.title}, agotado`
     return `Pedir ${props.title} por WhatsApp`
   })
 
   let lastWaOpenMs = 0
   function onWaCardClick(e) {
-    if (!whatsappReady.value) {
+    if (!whatsappEnabled.value) {
       e.preventDefault()
       return
     }
@@ -201,6 +238,15 @@
       0 0 0 1px rgba(var(--vin-pastel-nube-rgb), 0.5) inset,
       0 0 24px rgba(var(--vin-rosa-melocoton-rgb), 0.18);
   }
+
+  .card-pack--agotado:hover {
+    transform: translateY(-1px);
+    border-color: rgba(var(--vin-rosa-ballet-rgb), 0.45) !important;
+    box-shadow:
+      0 14px 28px rgba(42, 32, 38, 0.22),
+      0 0 0 1px rgba(var(--vin-leche-rgb), 0.35) inset,
+      0 -2px 20px rgba(var(--vin-rosa-sorbete-rgb), 0.1) inset;
+  }
   
   .card-pack-body {
     flex: 1 1 auto;
@@ -234,6 +280,97 @@
 
   .card-pack:hover .card-img-top {
     transform: scale(1.03);
+  }
+
+  .card-pack--agotado:hover .card-img-top--agotado {
+    transform: none;
+  }
+
+  .card-img-top--agotado {
+    filter: grayscale(1);
+    opacity: 0.88;
+  }
+
+  /*
+   * Sobre la foto: pegado al lado izquierdo para no tapar la botella (suelen ir centradas / algo a la derecha).
+   */
+  .card-ultima-unidad-overlay {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 2;
+    box-sizing: border-box;
+    max-width: min(72%, 11.5rem);
+    padding: 0.38rem 0.42rem 0.42rem 0.38rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    pointer-events: none;
+  }
+
+  .card-ultima-unidad-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    max-width: 100%;
+    padding: 0.38rem 0.72rem;
+    border-radius: 0.48rem;
+    font-family: 'Nunito', system-ui, sans-serif;
+    font-size: clamp(0.56rem, 1.35vw, 0.7rem);
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--vin-texto-claro);
+    text-shadow: 0 1px 2px rgba(var(--vin-profundo-rgb), 0.45);
+    text-align: left;
+    line-height: 1.15;
+    background-image: var(--vin-btn-carousel-fill);
+    border: 1px solid rgba(255, 236, 245, 0.42);
+    box-shadow:
+      0 2px 14px rgba(var(--vin-acento-rgb), 0.34),
+      0 0 20px rgba(var(--vin-rosa-sorbete-rgb), 0.22),
+      0 1px 0 rgba(255, 255, 255, 0.2) inset;
+  }
+
+  @media (max-width: 575.98px) {
+    .card-ultima-unidad-overlay {
+      max-width: min(78%, 10.5rem);
+      padding: 0.32rem 0.32rem 0.36rem 0.32rem;
+    }
+
+    .card-ultima-unidad-chip {
+      padding: 0.3rem 0.44rem;
+      letter-spacing: 0.065em;
+      font-size: clamp(0.52rem, 3.1vw, 0.62rem);
+    }
+  }
+
+  @media (max-width: 359.98px) {
+    .card-ultima-unidad-chip {
+      letter-spacing: 0.055em;
+      padding: 0.28rem 0.36rem;
+      font-size: clamp(0.48rem, 3.35vw, 0.56rem);
+    }
+  }
+
+  .card-agotado-badge {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    padding: 0.42rem 0.85rem;
+    border-radius: 999px;
+    font-size: clamp(0.72rem, 2vw, 0.88rem);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: rgba(42, 32, 38, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    box-shadow: 0 8px 22px rgba(8, 5, 9, 0.35);
+    pointer-events: none;
   }
   
   @media (max-width: 575.98px) {

@@ -17,7 +17,8 @@
       "valle": "Valle de Colchagua / Valle del Itata",
       "image": "/img/livianita.jpeg",
       "price": "$13.990",
-      "precioEspecial": "$12.500"
+      "precioEspecial": "$12.500",
+      "agotado": true
     },
     {
       "id": "3",
@@ -47,7 +48,8 @@
       "valle": "Valle del Maipo",
       "image": "/img/grand_levita.jpeg",
       "price": "$35.990",
-      "precioEspecial": "$30.000"
+      "precioEspecial": "$30.000",
+      "ultimaUnidad": true
     },
     {
       "id": "6",
@@ -57,7 +59,8 @@
       "valle": "Valle del Maipo",
       "image": "/img/umbral.jpeg",
       "price": "$13.500",
-      "precioEspecial": "$12.000"
+      "precioEspecial": "$12.000",
+      "ultimaUnidad": true
     },
     {
       "id": "7",
@@ -97,7 +100,8 @@
       "valle": "Valle del Maipo",
       "image": "/img/ambar.jpeg",
       "price": "$17.990",
-      "precioEspecial": "$16.000"
+      "precioEspecial": "$16.000",
+      "ultimaUnidad": true
     }
   
     ]
